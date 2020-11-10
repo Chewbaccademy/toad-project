@@ -24,27 +24,27 @@ Projet Toad par Bro Kiki et Bro Thony
 5. retourner la valeur de la classe à prédir des johns
 
 ## varialbes globales
-SEPARATOR
+SEPARATOR  
 READ_MODE
 
 ## fonctions
-parseCsvLine(csvLine:str):Dataset
-parseCsvFile(filename:str)
-euclideanKNN(dataSet:List[Datum], classIndex:int)
+parseCsvLine(csvLine:str):Dataset  
+parseCsvFile(filename:str)  
+euclideanKNN(dataSet:List[Datum], classIndex:int)  
 
 ## classes
 
 ### Datum
-constructor(csvLine:str)
-euclideanDistance(compared:Datum, classIndex:int)
-euclideanKNN(dataSet:List[Datum], classIndex:int)
+constructor(csvLine:str)  
+euclideanDistance(compared:Datum, classIndex:int)  
+euclideanKNN(dataSet:List[Datum], classIndex:int)  
 
 ### Dataset
 
-data:List[Datum]
-fields:List[str]
-nbFields:int
+data:List[Datum]  
+fields:List[str]  
+nbFields:int  
 
-constructor(fields:List[str], data:List[Datum])
+constructor(fields:List[str], data:List[Datum])  
 
 
