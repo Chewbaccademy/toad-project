@@ -3,5 +3,6 @@ class Datum:
     docstring
     """
     
-    __init__(self, str csvLine):
+    def __init__(self, csvLine):
+        return
         
