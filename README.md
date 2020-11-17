@@ -32,8 +32,8 @@ SEPARATOR
 READ_MODE
 
 ## fonctions
-parseCsvLine(csvLine:str):Dataset  
-parseCsvFile(filename:str)  
+parseCsvLine(csvLine:str):List  
+parseCsvFile(filename:str):Dataset  
 euclideanKNN(dataSet:List[Datum], classIndex:int)  
 
 ## classes
