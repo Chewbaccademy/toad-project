@@ -1,6 +1,10 @@
 Projet Toad par Bro Kiki et Bro Thony
 =====================================
 
+## vocabulaire
+
+john : l'objet dont on veut determiner une classe inconnue
+
 ## données
 
 ### Input
@@ -16,7 +20,7 @@ Projet Toad par Bro Kiki et Bro Thony
 ## scenario
 
 1. parsing du fichier
-2. calcul de la distance enter john et les éléments du fichier
+2. calcul de la distance entre john et les éléments du fichier
 3. détermination des K cas les plus proches de john
 4. demander s'il y a d'autres johns à rentrer  
    4a. si oui, on retourne à l'étape 2
