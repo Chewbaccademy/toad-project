@@ -32,23 +32,23 @@ SEPARATOR
 READ_MODE
 
 ## fonctions
-parseCsvLine(csvLine:str):List  
+parseCsvLine(csvLine:str):list  
 parseCsvFile(filename:str):Dataset  
-euclideanKNN(dataSet:List[Datum], classIndex:int)  
+euclideanKNN(dataSet:list[Datum], index_col:int)  
 
 ## classes
 
 ### Datum
-constructor(csvLine:str)  
-euclideanDistance(compared:Datum, classIndex:int)  
-euclideanKNN(dataSet:List[Datum], classIndex:int)  
+constructor(csvLine:list)  
+euclideanDistance(compared:Datum, index_col:int)  
+euclideanKNN(dataSet:list[Datum], index_col:int)  
 
 ### Dataset
 
-data:List[Datum]  
-fields:List[str]  
+data:list[Datum]  
+fields:list[str]  
 nbFields:int  
 
-constructor(fields:List[str], data:List[Datum])  
+constructor(fields:list[str], data:list[Datum])  
 
 
