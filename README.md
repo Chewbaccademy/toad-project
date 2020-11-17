@@ -3,7 +3,7 @@ Projet Toad par Bro Kiki et Bro Thony
 
 ## vocabulaire
 
-john : l'objet dont on veut determiner une classe inconnue
+**john** : l'objet dont on veut determiner une classe inconnue
 
 ## données
 
@@ -27,7 +27,7 @@ john : l'objet dont on veut determiner une classe inconnue
    4b. Si non, on passe à l'étape 5
 5. retourner la valeur de la classe à prédir des johns
 
-## varialbes globales
+## constantes de configuration
 SEPARATOR  
 READ_MODE
 
