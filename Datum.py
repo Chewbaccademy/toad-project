@@ -43,7 +43,6 @@ class Datum:
                     distances[distances.index(maximum(distances))] = dist
         
         # retour de la valeur de la colonne recherchée en fonction des k éléments les plus proches
-        # [(2, e), (5, e), (7.5, ne)]
 
         #* comptage des valeurs si la distance compte
 
