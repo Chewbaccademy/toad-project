@@ -1,9 +1,17 @@
 import math
 
-def maximum(table:list):
+def maximum(table:list, index_tri:int):
+    """
+    renvoie l'indice duplus grand élément d'une liste de tuple
+
+    @param {list} table : la liste dont on veut le maximum
+    @param {int} index_tri : l'index des tuples que l'on considère pour le tri
+
+    @return {int} l'indice du plus grand élément de table
+    """
     max = table[0]
     for i in table:
-        if i > max:
+        if i[index_tri] > max:
             max = i
     return max
 
@@ -20,7 +28,16 @@ class Datum:
         self.attrs = csv_line
         pass
         
+
     def distanceEuclide(self, compared:Datum, index_col:int):
+        """
+        Calcule la distance euclidienne entre deux datum
+
+        @param {Datum} compared le Datum que l'on compare à self  
+        @param {int} index_col l'index de la colonne à rechercher et à ne pas prendre en compte
+
+        @return retourne la distance entre les deux Datum
+        """
         dist = 0
         for i in range(len(self.attrs) - 1):
             if self.attrs[i] != compared[i if i < index_col else (i + 1)]:
@@ -32,6 +49,16 @@ class Datum:
 
 
     def euclideanKNN(self, dataset, index_col: int, k:int):
+        """
+        Renvoie la valeur du champ recherché
+
+        @param {Dataset} dataset : le dataset de base qui sert de comparatif
+        @param {int} index_col : l'index de la colonne à rechercher et à ne pas prendre en compte  
+        @param {int} k : le nombre d'élément du dataset à prendre en compte pour la recherche de la valeur
+
+
+        @return retourne la valeur du champ recherché
+        """
         # calcul des k éléments les plus proches
         distances = []
         for datum in dataset:
@@ -39,8 +66,8 @@ class Datum:
             if(len(distances) < k):
                 distances.append(dist)
             else:
-                if(dist[0] < maximum(distances)):
-                    distances[distances.index(maximum(distances))] = dist
+                if(dist[0] < maximum(distances, 0)):
+                    distances[distances.index(maximum(distances, 0))] = dist
         
         # retour de la valeur de la colonne recherchée en fonction des k éléments les plus proches
 
