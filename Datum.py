@@ -1,10 +1,5 @@
 import math
 
-def parse_csv_line(line: str):
-    """
-    """
-    return line.rstrip().split(',')
-
 def maximum(table:list):
     max = table[0]
     for i in table:
@@ -37,6 +32,7 @@ class Datum:
 
 
     def euclideanKNN(self, dataset, index_col: int, k:int):
+        # calcul des k éléments les plus proches
         distances = []
         for datum in dataset:
             dist = (self.distanceEuclide(datum, index_col), datum.attrs[index_col])
@@ -46,6 +42,44 @@ class Datum:
                 if(dist[0] < maximum(distances)):
                     distances[distances.index(maximum(distances))] = dist
         
+        # retour de la valeur de la colonne recherchée en fonction des k éléments les plus proches
+        # [(2, e), (5, e), (7.5, ne)]
+
+        #* comptage des valeurs si la distance compte
+
+        # occurences = []
+        # for elem in distances:
+        #     value = elem[1]
+        #     ponderation = 1 / elem[0]
+        #     presence = False
+        #     for i in range(len(occurences)):
+        #         occurence = occurences[i]
+        #         if value == occurence[1]:
+        #             occurences[i] = (occurence[0] + ponderation, occurence[1])
+        #             presence = True
+        #     if not presence:
+        #         occurences.append(ponderation, value)
+
+        # comptage des valeurs si la distance ne compte pas
+
+        occurences = []
+        for element in distances:
+            occurences.append(element[1])
+        maxi = 0
+        value = []
+        for element in distances:
+            if occurences.count(element[1]) > maxi:
+                value = [element[1]]
+                maxi = occurences.count(element[1])
+            elif occurences.count(element[1]) == maxi:
+                value.append(element[1])
+
+        if len(value) == 1:
+            return value[0]
+        elif len(value) > 1:
+            return value
+        else:
+            return None
         pass
 
 
