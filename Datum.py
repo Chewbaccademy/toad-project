@@ -1,20 +1,30 @@
 import math
 
-def maximum(table:list, index_tri:int):
+def maximum(table):
     """
-    renvoie l'indice duplus grand élément d'une liste de tuple
+    renvoie l'indice du plus grand élément d'une liste de tuple
 
     @param {list} table : la liste dont on veut le maximum
-    @param {int} index_tri : l'index des tuples que l'on considère pour le tri
 
     @return {int} l'indice du plus grand élément de table
     """
-    max = table[0]
-    for i in table:
-        if i[index_tri] > max:
-            max = i
+    max = table[0][0]
+    for element in table:
+        if element[0] > max:
+            max = element[0]
     return max
 
+    # [(1,2), (5,6), (1,5)]
+
+def indexTuple(table, sub_element):
+    """
+    
+    """
+    for i in range(len(table)):
+        element = table[i]
+        if element[0] == sub_element:
+            return i
+    return -1
 
 class Datum:
     """
@@ -24,13 +34,13 @@ class Datum:
         - attrs : une List des attributs de l'objet
     """
     
-    def __init__(self, csv_line:list):
+    def __init__(self, csv_line):
         self.attrs = csv_line
         pass
         
 
-    def distanceEuclide(self, compared:Datum, index_col:int):
-        """
+    def distanceEuclide(self, compared, index_col, dataset):
+        """n
         Calcule la distance euclidienne entre deux datum
 
         @param {Datum} compared le Datum que l'on compare à self  
@@ -39,73 +49,102 @@ class Datum:
         @return retourne la distance entre les deux Datum
         """
         dist = 0
+        limits = dataset.getLimits()
+
+        # Pour chaque attribut
         for i in range(len(self.attrs) - 1):
-            if self.attrs[i] != compared[i if i < index_col else (i + 1)]:
-                dist += 0
-            else:
+
+            # Si c'est un nombre pon calcule la distance euclidienne
+            if limits[i] != None:
+                dist += math.sqrt(self.attrs[i] - (compared.attrs[i if i < index_col else (i + 1)] / (limits[i][2] - limits[i[1]])) ** 2)
+            
+            # Si c'est une chaine de caractère on renvoie 0 ou 1
+            if self.attrs[i] != compared.attrs[i if i < index_col else (i + 1)]:
                 dist += 1
+            else:
+                dist += 0
         return dist
 
 
 
-    def euclideanKNN(self, dataset, index_col: int, k:int):
+    def euclideanKNN(self, dataset, index_col, k, pondere):
         """
-        Renvoie la valeur du champ recherché
+        Renvoie la liste des occurences des possibilités de la classe à prédire
 
         @param {Dataset} dataset : le dataset de base qui sert de comparatif
         @param {int} index_col : l'index de la colonne à rechercher et à ne pas prendre en compte  
         @param {int} k : le nombre d'élément du dataset à prendre en compte pour la recherche de la valeur
 
 
-        @return retourne la valeur du champ recherché
+        @return retourne la liste des occurences des possibilités de la classe à prédire
         """
-        # calcul des k éléments les plus proches
+        # List de tuple sous la forme (<nombre d'iteration>, <etat>)
         distances = []
-        for datum in dataset:
-            dist = (self.distanceEuclide(datum, index_col), datum.attrs[index_col])
+        
+        # pour chaque datum
+        for datum in dataset: 
+            dist = (
+                self.distanceEuclide(datum, index_col, dataset), 
+                datum.attrs[index_col]
+            )
+            
+            # si la liste ne contient pas encore les k plus proches éléments
             if(len(distances) < k):
                 distances.append(dist)
+
             else:
-                if(dist[0] < maximum(distances, 0)):
-                    distances[distances.index(maximum(distances, 0))] = dist
+                max = maximum(distances)
+                
+                # si le datum fait parti des k plus proches 
+                if dist[0] < max:
+                    distances[indexTuple(distances, max)] = dist
         
         # retour de la valeur de la colonne recherchée en fonction des k éléments les plus proches
 
-        #* comptage des valeurs si la distance compte
+        
+        # dictionnaire des valeurs de pondération pour chaque possibilité de la classe à prédire
+        # les valeurs de pondération sont égales aux occurences des possibilités lors d'un vote majoritaire
+        ponderation = {}
 
-        # occurences = []
-        # for elem in distances:
-        #     value = elem[1]
-        #     ponderation = 1 / elem[0]
-        #     presence = False
-        #     for i in range(len(occurences)):
-        #         occurence = occurences[i]
-        #         if value == occurence[1]:
-        #             occurences[i] = (occurence[0] + ponderation, occurence[1])
-        #             presence = True
-        #     if not presence:
-        #         occurences.append(ponderation, value)
+        if pondere :
+            # on parcours les k éléments les plus proches
+            for elem in distances:
 
-        # comptage des valeurs si la distance ne compte pas
+                # si l'élément est déjà présent, on incrémente sa pondération
+                if elem[1] in ponderation:
+                    if elem[0] != 0:
+                        ponderation[elem[1]] += 1 / elem[0]
 
-        occurences = []
-        for element in distances:
-            occurences.append(element[1])
-        maxi = 0
-        value = []
-        for element in distances:
-            if occurences.count(element[1]) > maxi:
-                value = [element[1]]
-                maxi = occurences.count(element[1])
-            elif occurences.count(element[1]) == maxi:
-                value.append(element[1])
+                # sinon on indique qu'il est présent pour la première fois
+                else:
+                    if elem[0] != 0:
+                        ponderation[elem[1]] = 1 / elem[0]
+                    else:
+                        ponderation[elem[1]] = 0
 
-        if len(value) == 1:
-            return value[0]
-        elif len(value) > 1:
-            return value
-        else:
-            return None
-        pass
+
+
+        else :
+            # on parcours les k éléments les plus proches
+            for elem in distances:
+
+                # si l'élément est déjà présent, on incrémente son occurence
+                if elem[1] in ponderation:
+                    ponderation[elem[1]] += 1
+
+                # sinon on indique qu'il est présent pour la première fois
+                else:
+                    ponderation[elem[1]] = 1
+
+        # on retourne la liste des occurences
+        return ponderation
+
+    def __getitem__(self, item):
+        """
+        Get the attribute at current index
+        @param {int} item index of the data to return
+        """
+        return self.attrs[item]
+
 
 
