@@ -1,6 +1,6 @@
 from csvTools import *
 import argparse
-
+import operator
 
 def arg_parse():
     parser = argparse.ArgumentParser()
@@ -21,16 +21,18 @@ def afficherStats(filename, dataset, type_donnees, predictions):
     nb_attr = dataset.getNbFields()
     print(f"{nb_donnees} individus de type {type_donnees}")
     print(f"{nb_attr} attributs")
-    print(f"predictions : {predictions}")
+    inverse = [(value, key) for key, value in predictions.items()]
+    pred = max(inverse)[1]
+    print(f"predictions : {pred} ({predictions})")
 
 if __name__ == "__main__":
 
-    # TODO : changer le nom de variable de O
-    FILE_NAME, NAME, COLUMN_INDEX, K, O, IS_PONDERE, TEST_FILE_NAME  = arg_parse()
+
+    FILE_NAME, NAME, COLUMN_INDEX, K, optimized_indexes_str, IS_PONDERE, TEST_FILE_NAME  = arg_parse()
 
     
-    if len(O) != 0:
-        optimized_indexes = O.split(SEPARATOR)
+    if len(optimized_indexes_str) != 0:
+        optimized_indexes = optimized_indexes_str.split(SEPARATOR)
         optimized_indexes = [int(index) for index in optimized_indexes]
         optimized_indexes.append(COLUMN_INDEX)
         COLUMN_INDEX = len(optimized_indexes) - 1
